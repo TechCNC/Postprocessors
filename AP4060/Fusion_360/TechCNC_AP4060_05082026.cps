@@ -385,6 +385,18 @@ function onOpen() {
   }
   writeln(";");
 
+  // source document name and generation timestamp
+  var docName = getGlobalParameter("document-name", "");
+  if (docName) {
+    writeComment("Source file: " + docName);
+  }
+  var now = new Date();
+  var pad = function(n) { return n < 10 ? "0" + n : String(n); };
+  var dateStr = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+  var timeStr = pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
+  writeComment("Generated: " + dateStr + " " + timeStr);
+  writeln(";");
+
   writeProgramHeader();
 
   // absolute coordinates and feed per min
