@@ -386,7 +386,15 @@ function onOpen() {
   writeln(";");
 
   // source document name and generation timestamp
-  var docName = getGlobalParameter("document-name", "");
+  var docName = "";
+  if (hasGlobalParameter("document-name")) {
+    docName = getGlobalParameter("document-name");
+  } else if (hasGlobalParameter("document-path")) {
+    var docPath = getGlobalParameter("document-path");
+    docName = docPath.replace(/^.*[\\\/]/, "").replace(/\.[^.]+$/, "");
+  } else if (hasGlobalParameter("job-description")) {
+    docName = getGlobalParameter("job-description");
+  }
   if (docName) {
     writeComment("Source file: " + docName);
   }
