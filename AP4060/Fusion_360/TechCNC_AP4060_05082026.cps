@@ -403,6 +403,13 @@ function onOpen() {
   var dateStr = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
   var timeStr = pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
   writeComment("Generated: " + dateStr + " " + timeStr);
+  var totalTime = 0;
+  for (var i = 0; i < getNumberOfSections(); ++i) {
+    totalTime += getSection(i).getCycleTime();
+  }
+  if (totalTime > 0) {
+    writeComment(localize("Total time") + ": " + formatTime(totalTime));
+  }
   writeln(";");
 
   writeProgramHeader();
@@ -1753,14 +1760,6 @@ function writeProgramHeader() {
     }
   }
 
-  // total program cycle time
-  var totalTime = 0;
-  for (var i = 0; i < getNumberOfSections(); ++i) {
-    totalTime += getSection(i).getCycleTime();
-  }
-  if (totalTime > 0) {
-    writeComment(localize("Total time") + ": " + formatTime(totalTime));
-  }
 }
 // <<<<< INCLUDED FROM include_files/writeProgramHeader.cpi
 // >>>>> INCLUDED FROM include_files/subprograms.cpi
