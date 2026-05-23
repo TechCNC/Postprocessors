@@ -463,15 +463,44 @@ function onSection() {
   writeToolCall(tool, insertToolCall);
   setCoolant(tool.coolant); // writes the required coolant codes
   function setCoolant(coolant) {
-  // Все режимы кроме Disabled: всегда M7+M8.
-  // Для drilling/reaming/T-slot операций в Fusion выбирать Flood (Q20).
+  // Override: для drilling и reaming — всегда Q30 при любом режиме кроме Disabled.
+  // (T-slot фрезы и остальные инструменты — без override, по выбору оператора.)
+  var isDrillingOrReaming = (
+    tool.type == TOOL_DRILL ||
+    tool.type == TOOL_DRILL_CENTER ||
+    tool.type == TOOL_DRILL_SPOT ||
+    tool.type == TOOL_DRILL_BLOCK ||
+    tool.type == TOOL_REAMER
+  );
+
+  // Disabled — полное отключение, override НЕ применяется
+  if (coolant == COOLANT_OFF) {
+    writeComment("Coolant: Disabled");
+    writeBlock("G10", "L80", "P8133", "Q0");
+    writeBlock("M9");
+    return;
+  }
+
+  // Override Q30 для drill/reamer при любом включённом режиме
+  if (isDrillingOrReaming) {
+    var modeLabel = "";
+    switch (coolant) {
+      case COOLANT_AIR:        modeLabel = "Air"; break;
+      case COOLANT_MIST:       modeLabel = "Mist"; break;
+      case COOLANT_FLOOD_MIST: modeLabel = "Flood and Mist"; break;
+      case COOLANT_FLOOD:      modeLabel = "Flood"; break;
+      default:                 modeLabel = "Unknown";
+    }
+    writeComment("Coolant: " + modeLabel + " (drill/reamer override)");
+    writeComment("MQL oil amount Q30 ml/h (forced for drilling/reaming)");
+    writeBlock("G10", "L80", "P8133", "Q30");
+    writeBlock("M7");
+    writeBlock("M8");
+    return;
+  }
+
+  // Обычные режимы — Q по выбору оператора
   switch (coolant) {
-    case COOLANT_OFF:
-      // Полное отключение — воздух и MQL выключены для всех операций
-      writeComment("Coolant: Disabled");
-      writeBlock("G10", "L80", "P8133", "Q0"); // обнулить MQL
-      writeBlock("M9"); // выключить M7/M8
-      break;
     case COOLANT_AIR:
       // Только воздух — MQL обнулён (Q0), но M7+M8 включены
       writeComment("Coolant: Air");
@@ -481,7 +510,6 @@ function onSection() {
       writeBlock("M8");
       break;
     case COOLANT_MIST:
-      // Воздух + туман
       writeComment("Coolant: Mist");
       writeComment("MQL oil amount Q5 ml/h");
       writeBlock("G10", "L80", "P8133", "Q5");
@@ -489,7 +517,6 @@ function onSection() {
       writeBlock("M8");
       break;
     case COOLANT_FLOOD_MIST:
-      // Заливное + туман
       writeComment("Coolant: Flood and Mist");
       writeComment("MQL oil amount Q10 ml/h");
       writeBlock("G10", "L80", "P8133", "Q10");
@@ -497,7 +524,7 @@ function onSection() {
       writeBlock("M8");
       break;
     case COOLANT_FLOOD:
-      // Заливное — рекомендуется для сверления, развертывания, T-slot фрезы
+      // Заливное — рекомендуется для T-slot фрезы
       writeComment("Coolant: Flood");
       writeComment("MQL oil amount Q20 ml/h");
       writeBlock("G10", "L80", "P8133", "Q20");
