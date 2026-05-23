@@ -12,7 +12,7 @@
 
 description = "Tech CNC";
 vendor = "Tech CNC";
-vendorUrl = "Tech CNC postprocessor for Fusion-360";
+vendorUrl = "Tech CNC postprocessor for Fusion-360 / CNC Router AP4060";
 legal = "Copyright (C) 2012-2023 by Autodesk, Inc.";
 certificationLevel = 2;
 minimumRevision = 45917;
