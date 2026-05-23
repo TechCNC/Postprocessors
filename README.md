@@ -9,6 +9,8 @@ Postprocessors for AP4060 and CNC_T800 machines. Supports Fusion 360 and SolidCA
 **Fusion 360** (`.cps`)
 | Date | File |
 |------|------|
+| 05/22/2026 | `TechCNC_AP4060_05222026.cps` |
+| 05/08/2026 | `TechCNC_AP4060_05082026.cps` |
 | 12/22/2025 | `TechCNC_AP4060_22122025.cps` |
 | 11/19/2025 | `TechCNC_AP4060_19112025.cps` |
 | 10/20/2025 | `TechCNC_AP4060_20102025.cps` |
@@ -32,6 +34,8 @@ Postprocessors for AP4060 and CNC_T800 machines. Supports Fusion 360 and SolidCA
 Postprocessors/
 ├── AP4060/
 │   ├── Fusion_360/
+│   │   ├── TechCNC_AP4060_05222026.cps
+│   │   ├── TechCNC_AP4060_05082026.cps
 │   │   ├── TechCNC_AP4060_22122025.cps
 │   │   ├── TechCNC_AP4060_19112025.cps
 │   │   └── TechCNC_AP4060_20102025.cps
@@ -47,9 +51,9 @@ Postprocessors/
 ## How to Install
 
 **Fusion 360 (.cps)**
-1. Fusion 360 → Manufacture workspace
-2. Post Process → click the library icon
-3. Import → select the `.cps` file
+1. Fusion 360 -> Manufacture workspace
+2. Post Process -> click the library icon
+3. Import -> select the `.cps` file
 4. Use the latest dated version
 
 **SolidCAM (.gpp / .vmid)**
