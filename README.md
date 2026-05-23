@@ -2,6 +2,8 @@
 
 Postprocessors for AP4060 and CNC_T800 machines. Supports Fusion 360 and SolidCAM.
 
+Naming convention: `..._MMDDYYYY.cps` (US date format, matches today''s file `_05222026`).
+
 ## Machines
 
 ### AP4060
@@ -11,9 +13,9 @@ Postprocessors for AP4060 and CNC_T800 machines. Supports Fusion 360 and SolidCA
 |------|------|
 | 05/22/2026 | `TechCNC_AP4060_05222026.cps` |
 | 05/08/2026 | `TechCNC_AP4060_05082026.cps` |
-| 12/22/2025 | `TechCNC_AP4060_22122025.cps` |
-| 11/19/2025 | `TechCNC_AP4060_19112025.cps` |
-| 10/20/2025 | `TechCNC_AP4060_20102025.cps` |
+| 12/22/2025 | `TechCNC_AP4060_12222025.cps` |
+| 11/19/2025 | `TechCNC_AP4060_11192025.cps` |
+| 10/20/2025 | `TechCNC_AP4060_10202025.cps` |
 
 **SolidCAM** (`.gpp` / `.vmid`)
 | File | Axes |
@@ -26,7 +28,7 @@ Postprocessors for AP4060 and CNC_T800 machines. Supports Fusion 360 and SolidCA
 **Fusion 360** (`.cps`)
 | Date | File |
 |------|------|
-| 10/20/2025 | `Fusion360_T800_20102025.cps` |
+| 10/20/2025 | `Fusion360_T800_10202025.cps` |
 
 ## Structure
 
@@ -36,16 +38,16 @@ Postprocessors/
 │   ├── Fusion_360/
 │   │   ├── TechCNC_AP4060_05222026.cps
 │   │   ├── TechCNC_AP4060_05082026.cps
-│   │   ├── TechCNC_AP4060_22122025.cps
-│   │   ├── TechCNC_AP4060_19112025.cps
-│   │   └── TechCNC_AP4060_20102025.cps
+│   │   ├── TechCNC_AP4060_12222025.cps
+│   │   ├── TechCNC_AP4060_11192025.cps
+│   │   └── TechCNC_AP4060_10202025.cps
 │   └── Solid_CAM/
 │       ├── MD-CNC_3x.gpp
 │       ├── MD-CNC_3x.vmid
 │       ├── MD-CNC_4x.gpp
 │       └── MD-CNC_4x.vmid
 └── CNC_T800/
-    └── Fusion360_T800_20102025.cps
+    └── Fusion360_T800_10202025.cps
 ```
 
 ## How to Install
