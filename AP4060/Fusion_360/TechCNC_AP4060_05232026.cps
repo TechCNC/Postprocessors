@@ -465,13 +465,41 @@ function onSection() {
   function setCoolant(coolant) {
   // Override: для drilling и reaming — всегда Q30 при любом режиме кроме Disabled.
   // (T-slot фрезы и остальные инструменты — без override, по выбору оператора.)
-  var isDrillingOrReaming = (
-    tool.type == TOOL_DRILL ||
-    tool.type == TOOL_DRILL_CENTER ||
-    tool.type == TOOL_DRILL_SPOT ||
-    tool.type == TOOL_DRILL_BLOCK ||
-    tool.type == TOOL_REAMER
-  );
+  // Многоступенчатая детекция, на случай если константы TOOL_* в данной
+  // версии Fusion post-runtime отличаются от ожидаемых.
+  var isDrillingOrReaming = false;
+
+  // 1) tool.isDrill() — стандартный метод Fusion API, если доступен
+  if (typeof tool != "undefined" && typeof tool.isDrill == "function") {
+    try { if (tool.isDrill()) { isDrillingOrReaming = true; } } catch (e) {}
+  }
+
+  // 2) Проверка по tool.type константам
+  if (!isDrillingOrReaming && typeof tool != "undefined" && typeof tool.type != "undefined") {
+    if ((typeof TOOL_DRILL        != "undefined" && tool.type == TOOL_DRILL)        ||
+        (typeof TOOL_DRILL_CENTER != "undefined" && tool.type == TOOL_DRILL_CENTER) ||
+        (typeof TOOL_DRILL_SPOT   != "undefined" && tool.type == TOOL_DRILL_SPOT)   ||
+        (typeof TOOL_DRILL_BLOCK  != "undefined" && tool.type == TOOL_DRILL_BLOCK)  ||
+        (typeof TOOL_REAMER       != "undefined" && tool.type == TOOL_REAMER)) {
+      isDrillingOrReaming = true;
+    }
+  }
+
+  // 3) Fallback по стратегии операции
+  var opStrategy = "?";
+  if (typeof currentSection != "undefined" &&
+      typeof currentSection.hasParameter == "function" &&
+      currentSection.hasParameter("operation-strategy")) {
+    opStrategy = String(currentSection.getParameter("operation-strategy"));
+    if (opStrategy == "drill" || opStrategy == "bore" || opStrategy == "reaming" ||
+        opStrategy.indexOf("drill") >= 0 || opStrategy.indexOf("ream") >= 0) {
+      isDrillingOrReaming = true;
+    }
+  }
+
+  // DEBUG: вывести реальные значения, чтобы видеть почему сработал/не сработал override.
+  // После проверки эту строку можно убрать.
+  writeComment("DEBUG tool.type=" + tool.type + " strategy=" + opStrategy + " drillOverride=" + isDrillingOrReaming);
 
   // Disabled — полное отключение, override НЕ применяется
   if (coolant == COOLANT_OFF) {
