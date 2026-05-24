@@ -497,10 +497,6 @@ function onSection() {
     }
   }
 
-  // DEBUG: вывести реальные значения, чтобы видеть почему сработал/не сработал override.
-  // После проверки эту строку можно убрать.
-  writeComment("DEBUG tool.type=" + tool.type + " strategy=" + opStrategy + " drillOverride=" + isDrillingOrReaming);
-
   // Disabled — полное отключение, override НЕ применяется
   if (coolant == COOLANT_OFF) {
     writeComment("Coolant: Disabled");
